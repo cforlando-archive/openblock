@@ -1,5 +1,5 @@
 # Django settings for openblock project.
-
+import dj_database_url
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -9,18 +9,26 @@ ADMINS = (
 
 MANAGERS = ADMINS
 SITE_NAME = 'cfaorlando.openblock'
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycop2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle
-        'NAME': 'SITE_NAME',                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
-    }
-}
 
+# Parse database configuration from $DATABASE_URL
+
+DATABASES['default'] =  dj_database_url.config()
+
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Allow all host headers
+ALLOWED_HOSTS = ['*']
+
+# Static asset configuration
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = 'staticfiles'
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+) 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = []
@@ -124,6 +132,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'gunicorn'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -170,7 +179,6 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
-SESSION_COOKIE_DOMAIN = SITE_NAME
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
