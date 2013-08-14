@@ -12,6 +12,7 @@ SITE_NAME = 'cfaorlando.openblock'
 
 # Parse database configuration from $DATABASE_URL
 
+DATABASES = dict()
 DATABASES['default'] =  dj_database_url.config()
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
